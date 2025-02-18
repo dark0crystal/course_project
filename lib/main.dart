@@ -15,7 +15,7 @@ void main() {
         backgroundColor: Colors.indigo[300],
         centerTitle: true,
       ),
-      body: const Text("This is our new app ")
+      body: const Home(),
     )
   ));
 }
@@ -26,6 +26,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Text("إذا خلص الفول أنا مش مسؤول");
   }
 }

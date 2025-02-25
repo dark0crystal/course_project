@@ -11,3 +11,11 @@ To contribute in the project you first need to FORK the repository the clone :
 2.Cloning:
 
 ``` git clone https://github.com/dark0crystal/course_project.git```
+
+
+Git Guideline:
+
+To get the committed changes : ```git log --oneline ```
+To show all the branches ```git branch -a```
+To switch between branches ```git checkout <name-of-branch-you-want-to-switch-to> ```
+

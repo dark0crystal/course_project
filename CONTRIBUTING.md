@@ -6,5 +6,8 @@ To contribute in the project you first need to FORK the repository the clone :
 
 <img width="396" alt="Screenshot 2025-02-25 at 10 13 11 AM" src="https://github.com/user-attachments/assets/3e4fdb29-7de9-49f5-b8ea-098b5a2be5c7" />
 
+
+
 2.Cloning:
+
 ``` git clone https://github.com/your-github-username/course_project.git```

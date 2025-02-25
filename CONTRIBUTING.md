@@ -10,4 +10,4 @@ To contribute in the project you first need to FORK the repository the clone :
 
 2.Cloning:
 
-``` git clone https://github.com/your-github-username/course_project.git```
+``` git clone https://github.com/dark0crystal/course_project.git```

@@ -1,21 +1,47 @@
-CONTRIBUTING GUIDE
+🛠️ CONTRIBUTING GUIDE
+Thank you for your interest in contributing to this project! Follow the steps below to get started.
 
->To contribute in the project you first need to FORK the repository the clone :
+📌 Forking and Cloning the Repository
+1️⃣ Fork the Repository
+Before making any changes, you need to fork the repository to create your own copy. Follow these steps:
 
->1.Forking: by creating a new fork as displayed in the attached image
+Navigate to the repository on GitHub.
 
-<img width="396" alt="Screenshot 2025-02-25 at 10 13 11 AM" src="https://github.com/user-attachments/assets/3e4fdb29-7de9-49f5-b8ea-098b5a2be5c7" />
-
-
-
-2.Cloning:
-
-``` git clone https://github.com/dark0crystal/course_project.git```
+Click on the Fork button (as shown in the image below).
 
 
->Git Guideline:
->
->To get the committed changes : ```git log --oneline ```
->To show all the branches ```git branch -a```
->To switch between branches ```git checkout <name-of-branch-you-want-to-switch-to> ```
+
+2️⃣ Clone Your Forked Repository
+After forking, clone the repository to your local machine using the following command:
+
+bash
+نسخ
+تحرير
+git clone https://github.com/dark0crystal/course_project.git
+📜 Git Guidelines
+Here are some useful Git commands to help you navigate and manage the project:
+
+View commit history
+
+bash
+نسخ
+تحرير
+git log --oneline
+List all branches
+
+bash
+نسخ
+تحرير
+git branch -a
+Switch between branches
+
+bash
+نسخ
+تحرير
+git checkout <branch-name>
+🎯 Final Notes
+Always pull the latest changes from the main branch before working on new features.
+Follow the project’s coding standards and commit message guidelines.
+Feel free to open an issue if you encounter any problems.
+Happy coding! 🚀✨
 

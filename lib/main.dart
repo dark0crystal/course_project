@@ -20,12 +20,14 @@ void main() {
   ));
 }
 
-
+// stateless widget
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Text("إذا خلص الفول أنا مش مسؤول");
+      return Container(
+          color: Colors.blueAccent,
+      );
   }
 }

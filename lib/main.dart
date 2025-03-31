@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'theme/app_theme.dart';
+import 'widgets/navbar.dart';
+import 'widgets/hero_section.dart';
+import 'widgets/action_section.dart';
+import 'widgets/footer.dart';
 
 // In Flutter, MaterialApp() is a widget that serves as the root of a Flutter application and provides essential configurations for a Material Design-based app.
 // It's on the top near the widget tree , 
@@ -8,26 +12,47 @@ import 'package:flutter/material.dart';
 // we are adding const in front of the MaterialApp() to improve performance , 
 // because if we tell fultter that sth is a constant , it knows then the value will not change
 void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: Text("Hello World ,We Are Commong Soon!"),
-        backgroundColor: Colors.indigo[300],
-        centerTitle: true,
-      ),
-      body: const Home(),
-    )
-  ));
+  runApp(const MyApp());
 }
 
-// stateless widget
-class Home extends StatelessWidget {
-  const Home({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-      return Container(
-          color: Colors.blueAccent,
-      );
+    return MaterialApp(
+      title: 'Almlah',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Navbar(),
+            SizedBox(height: 40),
+            HeroSection(),
+            SizedBox(height: 40),
+            ActionSection(),
+            SizedBox(height: 40),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Footer(),
+            ),
+            SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
   }
 }

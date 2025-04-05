@@ -70,9 +70,9 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                      Image.asset(
-                      'assets/logo.png',
-                      width: 50, // Adjust as needed
-                      height: 50,
+                      'lib/assets/logo.png',
+                      width: 70, // Adjust as needed
+                      height: 70,
                     ),
                     GestureDetector(
                       onTap: _toggleMenu,

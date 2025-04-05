@@ -33,11 +33,11 @@ class ActionSection extends StatelessWidget {
                 Text(
                   'We Cover More Than 30 Tourism Places',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 8),
+                SizedBox(width: 2),
                 Text('🎉'),
               ],
             ),

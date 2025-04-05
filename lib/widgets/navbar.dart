@@ -193,7 +193,7 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
-                                'Features',
+                                '',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,

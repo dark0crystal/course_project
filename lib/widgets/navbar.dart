@@ -46,6 +46,7 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Material(
+      child: SafeArea(
       child: Stack(
         children: [
           Column(
@@ -262,6 +263,7 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
               },
             ),
         ],
+      ),
       ),
     );
   }

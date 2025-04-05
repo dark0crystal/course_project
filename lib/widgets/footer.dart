@@ -73,45 +73,45 @@ class Footer extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: const [
                 Text(
-                  'Mardas AlBusaidi',
+                  'Al-Mardas',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 12),
+                SizedBox(width: 2),
                 Text(
                   '•',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
                   ),
                 ),
-                SizedBox(width: 12),
+                SizedBox(width: 2),
                 Text(
                   'Hilal AlManji',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(width: 12),
+                SizedBox(width: 2),
                 Text(
                   '•',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: Colors.black54,
                   ),
                 ),
-                SizedBox(width: 12),
+                SizedBox(width: 2),
                 Text(
                   'Bashar',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),

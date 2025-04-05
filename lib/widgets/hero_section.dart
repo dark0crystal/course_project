@@ -12,7 +12,7 @@ class HeroSection extends StatelessWidget {
           const Text(
             'OMAN IS A LUXURY EXPERIENCE ...',
             style: TextStyle(
-              fontSize: 40,
+              fontSize: 30,
               fontWeight: FontWeight.w900,
               height: 1.2,
             ),
@@ -22,7 +22,7 @@ class HeroSection extends StatelessWidget {
           const Text(
             'WHERE EXPLORATION KNOWS NO BOUNDS',
             style: TextStyle(
-              fontSize: 40,
+              fontSize: 30,
               fontWeight: FontWeight.w900,
               height: 1.2,
             ),
@@ -32,7 +32,7 @@ class HeroSection extends StatelessWidget {
           Text(
             'Experience something extraordinary in Oman with AlMlah, your travel destination guide',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.grey[600],
             ),

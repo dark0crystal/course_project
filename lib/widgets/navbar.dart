@@ -69,13 +69,10 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'ALMLAH',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.2,
-                      ),
+                     Image.asset(
+                      'assets/logo.png',
+                      width: 50, // Adjust as needed
+                      height: 50,
                     ),
                     GestureDetector(
                       onTap: _toggleMenu,

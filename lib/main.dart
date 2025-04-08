@@ -1,3 +1,4 @@
+import 'package:course_project/widgets/TextCardScroller.dart';
 import 'package:course_project/widgets/image_gallery.dart';
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
@@ -43,6 +44,8 @@ class HomePage extends StatelessWidget {
             Navbar(),
             SizedBox(height: 40),
             HeroSection(),
+            SizedBox(height: 40),
+            TextCardScroller(),
             SizedBox(height: 40),
             ActionSection(),
             SizedBox(height: 40),

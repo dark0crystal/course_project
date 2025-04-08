@@ -15,21 +15,34 @@ class ImageGallery extends StatelessWidget {
     return Container(
       height: 80,
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: images.map((image) => Container(
-          width: 80,
-          height: 80,
-          margin: const EdgeInsets.only(right: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            image: DecorationImage(
-              image: AssetImage(image),
-              fit: BoxFit.cover,
-            ),
-          ),
-        )).toList(),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+        child: Row(
+          children: images.map((image) => Row(
+            children: [
+              // Image container
+              Container(
+                width: 80,
+                height: 80,
+                margin: const EdgeInsets.only(right: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                    image: AssetImage(image),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              // Gray separator
+              Container(
+                width: 1,
+                height: 80,
+                color: Colors.grey, // Gray color separator
+              ),
+            ],
+          )).toList(),
+        ),
       ),
     );
   }
-} 
+}

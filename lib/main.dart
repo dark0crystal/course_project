@@ -1,3 +1,4 @@
+import 'package:course_project/widgets/image_gallery.dart';
 import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'widgets/navbar.dart';

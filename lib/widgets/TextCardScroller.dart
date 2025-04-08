@@ -6,11 +6,11 @@ class TextCardScroller extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> texts = [
-      'Card One',
-      'Card Two',
-      'Card Three',
-      'Card Four',
-      'Card Five',
+      'Tourism opens your mind to new cultures',
+      'Discover hidden gems around the world',
+      'Nature beauty awaits your adventure',
+      'Every journey tells a unique story',
+      'Explore, Dream, and create memories',
     ];
 
     return SizedBox(

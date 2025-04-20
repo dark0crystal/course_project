@@ -10,6 +10,13 @@ class Addnewpostpage extends StatefulWidget {
 final _placeNameController = TextEditingController();
 final _placeDescriptionController =TextEditingController();
 
+@override
+void dispose(){
+  _placeNameController.dispose();
+  _placeDescriptionController.dispose();
+
+
+}
 class _AddnewpostpageState extends State<Addnewpostpage> {
   @override
   Widget build(BuildContext context) {
@@ -34,6 +41,15 @@ class _AddnewpostpageState extends State<Addnewpostpage> {
                 label: Text("Enter Place Description")
               ),
             ),
+            const SizedBox(height: 4,),
+            Center(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor:  Colors.blue,
+                ),
+                onPressed: (){},
+                 child: Text("Submit")),
+            )
             
 
 

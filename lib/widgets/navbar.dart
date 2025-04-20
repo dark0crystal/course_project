@@ -1,6 +1,8 @@
 import 'package:course_project/pages/AddNewPostPage.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../pages/Signup.dart';
+import '../pages/Login.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -245,14 +247,45 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                                 }, child: Text("Add New Post")),
                               ),
                               const SizedBox(height: 32),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(30),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>  Signup()),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
                                 ),
                                 child: const Text(
                                   'Sign In',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => Login()),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Log In',
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,

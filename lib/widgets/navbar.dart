@@ -1,3 +1,4 @@
+import 'package:course_project/pages/AddNewPostPage.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
@@ -235,6 +236,13 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
+                              ),
+                              const SizedBox(height: 32),
+                               Center(
+                                
+                                child:  ElevatedButton(onPressed: (){
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=> const AddNewPostPage()),);
+                                }, child: Text("Add New Post")),
                               ),
                               const SizedBox(height: 32),
                               Container(

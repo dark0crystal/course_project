@@ -4,12 +4,18 @@
 // Rating		double
 // Governorate		string
 // Place_type		string
+// Id 			string 
+// User_id		string
+// Approval		boolean
 
 class Postmodel {
-   String? Place_name;
-   String? Location;
-   String? Description;
-   int? Rating;
-   String? Governorate;
-   String? Place_type;
+  String? Id;
+  String? User_id;
+  bool? Approval;		
+  String? Place_name;
+  String? Location;
+  String? Description;
+  int? Rating;
+  String? Governorate;
+  String? Place_type;
 }

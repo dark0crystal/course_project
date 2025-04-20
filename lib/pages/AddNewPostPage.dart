@@ -7,12 +7,43 @@ class Addnewpostpage extends StatefulWidget {
   State<Addnewpostpage> createState() => _AddnewpostpageState();
 }
 
+final _placeNameController = TextEditingController();
+final _placeDescriptionController =TextEditingController();
+
 class _AddnewpostpageState extends State<Addnewpostpage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        Row(
+          children:[
+            const Text("Add New Form"),
+            TextField(
+              controller: _placeNameController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person_2),
+                label: Text("Enter Place Name")
+              ),
+            ),
+            const SizedBox(height: 4,),
+            
+             TextField(
+              controller: _placeDescriptionController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person_2),
+                label: Text("Enter Place Description")
+              ),
+            ),
+            
+
+
+            ]
+        )
+      ],
+    );
   }
 }
+
 
 // Place_name		string
 // Location 		string  	

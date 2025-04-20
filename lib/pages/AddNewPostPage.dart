@@ -7,57 +7,105 @@ class AddNewPostPage extends StatefulWidget {
   State<AddNewPostPage> createState() => _AddNewPostPageState();
 }
 
-
-
-
 class _AddNewPostPageState extends State<AddNewPostPage> {
   final TextEditingController _placeNameController = TextEditingController();
   final TextEditingController _placeDescriptionController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  
+  final TextEditingController _latitudeController = TextEditingController();
+  final TextEditingController _longitudeController = TextEditingController();
+  final TextEditingController _governorateController = TextEditingController();
+  final TextEditingController _placeTypeController = TextEditingController();
 
   String? selectedGovernorate;
-  final List<String> Governorates =['Muscat','Ibri'];
+final List<String> Governorates = [
+  'Muscat',
+  'Dhofar',
+  'Musandam',
+  'Al Buraimi',
+  'Ad Dakhiliyah',
+  'North Al Batinah',
+  'South Al Batinah',
+  'North Ash Sharqiyah',
+  'South Ash Sharqiyah',
+  'Al Dhahirah',
+  'Al Wusta'
+];
 
   String? selectedPlaceType;
-  final List<String> PlaceTypes =['Beach','Wadi','Hot Spring'];
+  final List<String> PlaceTypes = [
+  'Beach',
+  'Wadi',
+  'Hot Spring',
+  'Mountain',
+  'Desert',
+  'Castle',
+  'Fort',
+  'Museum',
+  'Cave',
+  'Park',
+  'Souq'
+];
+
 
   @override
   void dispose() {
     _placeNameController.dispose();
     _placeDescriptionController.dispose();
+    _latitudeController.dispose();
+    _longitudeController.dispose();
+    _governorateController.dispose();
+    _placeTypeController.dispose();
     super.dispose();
   }
 
   void handleSubmit() {
     final name = _placeNameController.text.trim();
     final description = _placeDescriptionController.text.trim();
+    final latitude = _latitudeController.text.trim();
+    final longitude = _longitudeController.text.trim();
 
-    if (name.isEmpty || description.isEmpty) {
+    // Validate that latitude and longitude are numbers
+    if (name.isEmpty || description.isEmpty || latitude.isEmpty || longitude.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill in all fields.")),
       );
       return;
     }
 
-    // Handle submission logic here
+    try {
+      final lat = double.parse(latitude);
+      final lon = double.parse(longitude);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Post submitted successfully!")),
-    );
+      // Ensure valid latitude and longitude ranges
+      if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please enter valid latitude and longitude.")),
+        );
+        return;
+      }
 
-    // Clear fields
-    _placeNameController.clear();
-    _placeDescriptionController.clear();
+      
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Post submitted successfully!")),
+      );
+
+      // Clear fields
+      _placeNameController.clear();
+      _placeDescriptionController.clear();
+      _latitudeController.clear();
+      _longitudeController.clear();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter valid numbers for latitude and longitude.")),
+      );
+    }
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add New Post"),
+        title: Text("Add New Post"),
         centerTitle: true,
       ),
       body: Padding(
@@ -83,70 +131,91 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
               maxLines: 3,
             ),
             const SizedBox(height: 24),
-            TextField(
-              controller: _locationController,
-              decoration: const InputDecoration(
-                labelText: "Location in eg. 23.4445 ,34.444445",
-                prefixIcon: Icon(Icons.description),
-                border: OutlineInputBorder(),
-              ),
-              maxLines: 3,
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _latitudeController,
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    decoration: const InputDecoration(
+                      labelText: "Latitude",
+                      prefixIcon: Icon(Icons.location_on),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TextField(
+                    controller: _longitudeController,
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    decoration: const InputDecoration(
+                      labelText: "Longitude",
+                      prefixIcon: Icon(Icons.location_on),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 24),
-            Column( 
+            Column(
               children: [
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(
                     labelText: "Choose a Governorate:",
-                    border:OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                   ),
                   value: selectedGovernorate,
-                  items: Governorates.map((String governorate){
-                      return DropdownMenuItem(
-                        value: governorate,
-                        child:  Text(governorate),
-                      );
-                  }).toList()
-                  , onChanged: (newValue){
+                  items: Governorates.map((String governorate) {
+                    return DropdownMenuItem(
+                      value: governorate,
+                      child: Text(governorate),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
                     setState(() {
-                      selectedGovernorate =newValue;
+                      selectedGovernorate = newValue;
                     });
-                  }
+                  },
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Text(
-                  selectedGovernorate ==null ? "no governorate selected" :"selected $selectedGovernorate",
-                  style: TextStyle(fontSize: 18),
-                )
+                  selectedGovernorate == null
+                      ? "No governorate selected"
+                      : "Selected $selectedGovernorate",
+                  style: const TextStyle(fontSize: 18),
+                ),
               ],
             ),
-            const SizedBox(height:24),
-            
-            Column( 
+            const SizedBox(height: 24),
+            Column(
               children: [
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(
                     labelText: "Choose a Place Type:",
-                    border:OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                   ),
                   value: selectedPlaceType,
-                  items: PlaceTypes.map((String placeType){
-                      return DropdownMenuItem(
-                        value: placeType,
-                        child:  Text(placeType),
-                      );
-                  }).toList()
-                  , onChanged: (newValue){
+                  items: PlaceTypes.map((String placeType) {
+                    return DropdownMenuItem(
+                      value: placeType,
+                      child: Text(placeType),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
                     setState(() {
-                      selectedPlaceType =newValue;
+                      selectedPlaceType = newValue;
                     });
-                  }
+                  },
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Text(
-                  selectedGovernorate ==null ? "no place type selected" :"selected $selectedPlaceType",
-                  style: TextStyle(fontSize: 18),
-                )
+                  selectedPlaceType == null
+                      ? "No place type selected"
+                      : "Selected $selectedPlaceType",
+                  style: const TextStyle(fontSize: 18),
+                ),
               ],
             ),
             const SizedBox(height: 24),
@@ -157,19 +226,10 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
-
-// Place_name		string
-// Location 		string  	
-// Description             string 
-// Rating		double
-// Governorate		string
-// Place_type		string

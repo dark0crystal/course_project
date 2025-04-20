@@ -7,9 +7,20 @@ class AddNewPostPage extends StatefulWidget {
   State<AddNewPostPage> createState() => _AddNewPostPageState();
 }
 
+
+
+
 class _AddNewPostPageState extends State<AddNewPostPage> {
   final TextEditingController _placeNameController = TextEditingController();
   final TextEditingController _placeDescriptionController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  
+
+  String? selectedGovernorate;
+  final List<String> Governorates =['Muscat','Ibri'];
+
+  String? selectedPlaceType;
+  final List<String> PlaceTypes =['Beach','Wadi','Hot Spring'];
 
   @override
   void dispose() {
@@ -18,7 +29,7 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
     super.dispose();
   }
 
-  void _handleSubmit() {
+  void handleSubmit() {
     final name = _placeNameController.text.trim();
     final description = _placeDescriptionController.text.trim();
 
@@ -39,6 +50,8 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
     _placeNameController.clear();
     _placeDescriptionController.clear();
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +83,75 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
               maxLines: 3,
             ),
             const SizedBox(height: 24),
+            TextField(
+              controller: _locationController,
+              decoration: const InputDecoration(
+                labelText: "Location in eg. 23.4445 ,34.444445",
+                prefixIcon: Icon(Icons.description),
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 24),
+            Column( 
+              children: [
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: "Choose a Governorate:",
+                    border:OutlineInputBorder(),
+                  ),
+                  value: selectedGovernorate,
+                  items: Governorates.map((String governorate){
+                      return DropdownMenuItem(
+                        value: governorate,
+                        child:  Text(governorate),
+                      );
+                  }).toList()
+                  , onChanged: (newValue){
+                    setState(() {
+                      selectedGovernorate =newValue;
+                    });
+                  }
+                ),
+                SizedBox(height: 24),
+                Text(
+                  selectedGovernorate ==null ? "no governorate selected" :"selected $selectedGovernorate",
+                  style: TextStyle(fontSize: 18),
+                )
+              ],
+            ),
+            const SizedBox(height:24),
+            
+            Column( 
+              children: [
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: "Choose a Place Type:",
+                    border:OutlineInputBorder(),
+                  ),
+                  value: selectedPlaceType,
+                  items: PlaceTypes.map((String placeType){
+                      return DropdownMenuItem(
+                        value: placeType,
+                        child:  Text(placeType),
+                      );
+                  }).toList()
+                  , onChanged: (newValue){
+                    setState(() {
+                      selectedPlaceType =newValue;
+                    });
+                  }
+                ),
+                SizedBox(height: 24),
+                Text(
+                  selectedGovernorate ==null ? "no place type selected" :"selected $selectedPlaceType",
+                  style: TextStyle(fontSize: 18),
+                )
+              ],
+            ),
+            const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: _handleSubmit,
+              onPressed: handleSubmit,
               icon: const Icon(Icons.send),
               label: const Text("Submit"),
               style: ElevatedButton.styleFrom(

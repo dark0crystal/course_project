@@ -51,13 +51,13 @@ class _EditPostPageState extends State<EditPostPage> {
   @override
   void initState() {
     super.initState();
-    _placeNameController.text = widget.post.Place_name ?? '';
-    _placeDescriptionController.text = widget.post.Description ?? '';
-    _locationController.text = widget.post.Location ?? '';
-    selectedGovernorate = widget.post.Governorate;
-    selectedPlaceType = widget.post.Place_type;
-    rating = widget.post.Rating ?? 5;
-    isChecked = widget.post.Approval ?? false;
+    _placeNameController.text = widget.post.placeName ?? '';
+    _placeDescriptionController.text = widget.post.description ?? '';
+    _locationController.text = widget.post.location ?? '';
+    selectedGovernorate = widget.post.governorate;
+    selectedPlaceType = widget.post.placeType;
+    rating = widget.post.rating ?? 5;
+    isChecked = widget.post.approval ?? false;
   }
 
   @override
@@ -69,13 +69,13 @@ class _EditPostPageState extends State<EditPostPage> {
   }
 
   void handleSubmit() {
-    widget.post.Place_name = _placeNameController.text.trim();
-    widget.post.Description = _placeDescriptionController.text.trim();
-    widget.post.Location = _locationController.text.trim();
-    widget.post.Governorate = selectedGovernorate;
-    widget.post.Place_type = selectedPlaceType;
-    widget.post.Rating = rating;
-    widget.post.Approval = isChecked;
+    widget.post.placeName = _placeNameController.text.trim();
+    widget.post.description = _placeDescriptionController.text.trim();
+    widget.post.location = _locationController.text.trim();
+    widget.post.governorate = selectedGovernorate;
+    widget.post.placeType = selectedPlaceType;
+    widget.post.rating = rating;
+    widget.post.approval = isChecked;
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Post updated successfully!")),

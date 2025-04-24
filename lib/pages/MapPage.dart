@@ -2,10 +2,10 @@ import 'package:course_project/pages/place_details.dart';
 import 'package:flutter/material.dart';
 import 'package:course_project/models/postModel.dart';
 
-class PlaceListScreen extends StatelessWidget {
+class MapPage extends StatelessWidget {
   final List<Postmodel> places;
 
-  const PlaceListScreen({Key? key, required this.places}) : super(key: key);
+  const MapPage({Key? key, required this.places}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +33,11 @@ class PlaceListScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Image.asset(
-                    'assets/images/placeholder.jpg', // Use actual image paths if available
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                  place.image ?? 'assets/oman1.jpg', // صورة بديلة في حال كانت null
+                  height: 180,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
                   Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Column(

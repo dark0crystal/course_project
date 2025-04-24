@@ -60,17 +60,18 @@ class Footer extends StatelessWidget {
           TextButton(
             onPressed: () {
               // Create a sample post for editing
-              final samplePost = Postmodel()
-                ..Id = '1'
-                ..User_id = 'user123'
-                ..Place_name = 'سد وادي قفيفة'
-                ..Description = 'احلى عن سد الخوض'
-                ..Location = '22.9193200, 58.4227050'
-                ..Governorate = 'Muscat'
-                ..Place_type = 'Beach'
-                ..Rating = 5
-                ..Approval = true;
-                
+             final samplePost = Postmodel(
+                id: '1',
+                userId: 'user123',
+                placeName: 'سد وادي قفيفة',
+                description: 'احلى عن سد الخوض',
+                location: '22.9193200, 58.4227050',
+                governorate: 'Muscat',
+                placeType: 'Beach',
+                rating: 5,
+                approval: true,
+              );
+                              
               Navigator.push(
                 context, 
                 MaterialPageRoute(

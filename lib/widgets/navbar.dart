@@ -1,8 +1,10 @@
 import 'package:course_project/pages/AddNewPostPage.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../pages/About.dart';
 import '../pages/Signup.dart';
 import '../pages/Login.dart';
+
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -222,12 +224,18 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                         Center(
                           child: Column(
                             children: [
-                              const Text(
-                                'About',
-                                style: TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/about');
+                                  _toggleMenu(); // Close the menu after navigation
+                                },
+                                child: const Text(
+                                  'About',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 32),

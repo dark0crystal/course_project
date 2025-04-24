@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../pages/EditPostPage.dart';
+import '../models/postModel.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
@@ -40,7 +42,9 @@ class Footer extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/about');
+            },
             child: const Text(
               'about',
               style: TextStyle(color: Colors.white),
@@ -51,6 +55,32 @@ class Footer extends StatelessWidget {
             child: const Text(
               'To Map',
               style: TextStyle(color: Colors.white),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              // Create a sample post for editing
+              final samplePost = Postmodel()
+                ..Id = '1'
+                ..User_id = 'user123'
+                ..Place_name = 'سد وادي قفيفة'
+                ..Description = 'احلى عن سد الخوض'
+                ..Location = '22.9193200, 58.4227050'
+                ..Governorate = 'Muscat'
+                ..Place_type = 'Beach'
+                ..Rating = 5
+                ..Approval = true;
+                
+              Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => EditPostPage(post: samplePost),
+                ),
+              );
+            },
+            child: const Text(
+              'Edit Page',
+              style: TextStyle(color: Color(0xFFFFD966)),
             ),
           ),
           const SizedBox(height: 32),

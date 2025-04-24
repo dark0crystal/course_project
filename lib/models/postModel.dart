@@ -18,6 +18,6 @@ class Postmodel {
   int? rating;
   String? governorate;
   String? placeType;
-
-  Postmodel({required this.id , required this.userId, required this.approval ,required this.description ,required this.governorate,required this.location,required this.placeName,required this.placeType,required this.rating});
+  String? image;
+  Postmodel({required this.id , required this.userId, required this.approval ,required this.description ,required this.governorate,required this.location,required this.placeName,required this.placeType,required this.rating ,  this.image});
 }

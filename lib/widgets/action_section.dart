@@ -1,4 +1,7 @@
+import 'package:course_project/pages/MapPage.dart';
+import 'package:course_project/shared/placesData.dart';
 import 'package:flutter/material.dart';
+ // 👈 make sure this import path is correct
 
 class ActionSection extends StatelessWidget {
   const ActionSection({super.key});
@@ -10,7 +13,12 @@ class ActionSection extends StatelessWidget {
       child: Column(
         children: [
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MapPage(places: Places,)),
+              );
+            },
             icon: const Icon(Icons.map),
             label: const Text(
               'Go To Map',
@@ -46,4 +54,4 @@ class ActionSection extends StatelessWidget {
       ),
     );
   }
-} 
+}

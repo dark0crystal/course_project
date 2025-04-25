@@ -13,6 +13,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Muscat",
     placeType: "Park",
+    image: "assets/oman1.jpeg",
   ),
   Postmodel(
     id: "post2",
@@ -24,5 +25,6 @@ List<Postmodel> Places = [
     rating: 4,
     governorate: "Muscat",
     placeType: "Market",
+    image: "assets/oman2.jpeg",
   ),
 ];

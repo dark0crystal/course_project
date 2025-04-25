@@ -15,6 +15,7 @@ class _MapPageState extends State<MapPage> {
   String? selectedGovernorate;
   String? selectedPlaceType;
   bool showOnlyWithImages = false;
+  bool showFilter = true; // Boolean state to toggle filter visibility
 
   final List<String> governorates = [
     'Muscat', 'Dhofar', 'Musandam', 'Al Buraimi', 'Ad Dakhiliyah',
@@ -42,63 +43,79 @@ class _MapPageState extends State<MapPage> {
       appBar: AppBar(title: const Text('Places')),
       body: Column(
         children: [
-          // Filter Section
+          // Button to toggle filter visibility
           Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Dropdown for Governorate
-                DropdownButtonFormField<String>(
-                  value: selectedGovernorate,
-                  decoration: const InputDecoration(
-                    labelText: 'Governorate',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: governorates.map((gov) {
-                    return DropdownMenuItem(value: gov, child: Text(gov));
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedGovernorate = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 12),
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  showFilter = !showFilter; // Toggle filter visibility
+                });
+              },
+              child: Text(showFilter ? 'Hide Filter' : 'Show Filter'),
+            ),
+          ),
 
-                // Radio Buttons for Place Type
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 6,
-                  children: placeTypes.map((type) {
-                    return ChoiceChip(
-                      label: Text(type),
-                      selected: selectedPlaceType == type,
-                      onSelected: (selected) {
-                        setState(() {
-                          selectedPlaceType = selected ? type : null;
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 12),
-
-                // Checkbox for image filtering
-                Row(
-                  children: [
-                    Checkbox(
-                      value: showOnlyWithImages,
-                      onChanged: (value) {
-                        setState(() {
-                          showOnlyWithImages = value ?? false;
-                        });
-                      },
+          // Filter Section (Visible only when showFilter is true)
+          Visibility(
+            visible: showFilter,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Dropdown for Governorate
+                  DropdownButtonFormField<String>(
+                    value: selectedGovernorate,
+                    decoration: const InputDecoration(
+                      labelText: 'Governorate',
+                      border: OutlineInputBorder(),
                     ),
-                    const Text('Show only places with images')
-                  ],
-                ),
-              ],
+                    items: governorates.map((gov) {
+                      return DropdownMenuItem(value: gov, child: Text(gov));
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGovernorate = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Radio Buttons for Place Type
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 6,
+                    children: placeTypes.map((type) {
+                      return ChoiceChip(
+                        label: Text(type),
+                        selected: selectedPlaceType == type,
+                        onSelected: (selected) {
+                          setState(() {
+                            selectedPlaceType = selected ? type : null;
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Checkbox for image filtering
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: showOnlyWithImages,
+                        onChanged: (value) {
+                          setState(() {
+                            showOnlyWithImages = value ?? false;
+                          });
+                        },
+                      ),
+                      const Text('Show only places with images')
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -129,11 +146,13 @@ class _MapPageState extends State<MapPage> {
                           ),
                           child: Column(
                             children: [
-                              Image.asset(
-                                place.image ?? 'assets/oman1.jpg',
-                                height: 180,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
+                              Center(
+                                child: Image.asset(
+                                  place.image ?? '',
+                                  height: 180,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(16.0),

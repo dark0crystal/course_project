@@ -1,4 +1,5 @@
 import 'package:course_project/pages/AddNewPostPage.dart';
+import 'package:course_project/shared/auth_state.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../pages/About.dart';
@@ -278,29 +279,50 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => Login()),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
-                                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Log In',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
+                              ValueListenableBuilder(
+                              valueListenable: AuthState.isLoggedIn,
+                              builder: (context, isLoggedIn, child) {
+                                return isLoggedIn
+                                    ? ElevatedButton(
+                                        onPressed: () {
+                                          AuthState.isLoggedIn.value = false;
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text("You have signed out.")),
+                                          );
+                                          _toggleMenu(); // Optionally close menu
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Sign Out',
+                                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                                        ),
+                                      )
+                                    : ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                                          _toggleMenu(); // Optionally close menu
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Log In',
+                                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                                        ),
+                                      );
+                              },
+                            ),
+
                             ],
                           ),
                         ),

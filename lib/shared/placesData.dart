@@ -119,6 +119,6 @@ List<Postmodel> Places = [
     rating: 4,
     governorate: "Ad Dakhiliyah",
     placeType: "Cave",
-    image: "lib/assets/oman1.jpeg",
+    image: "lib/assets/alhota.jpg",
   ),
 ];

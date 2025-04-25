@@ -2,10 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:course_project/models/postModel.dart';
 import 'package:course_project/pages/place_details.dart';
 
+class DiagonalClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 10);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
 class MapPage extends StatefulWidget {
   final List<Postmodel> places;
 
   const MapPage({Key? key, required this.places}) : super(key: key);
+  
 
   @override
   State<MapPage> createState() => _MapPageState();
@@ -44,17 +60,30 @@ class _MapPageState extends State<MapPage> {
       body: Column(
         children: [
           // Button to toggle filter visibility
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+         Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ClipPath(
+            clipper: DiagonalClipper(),
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
                   showFilter = !showFilter; // Toggle filter visibility
                 });
               },
-              child: Text(showFilter ? 'Hide Filter' : 'Show Filter'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero), // remove rounding for a better clip
+              ),
+              child: Text(
+                showFilter ? 'Hide Filter' : 'Show Filter',
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
           ),
+        ),
+
+
 
           // Filter Section (Visible only when showFilter is true)
           Visibility(

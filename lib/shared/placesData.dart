@@ -95,7 +95,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Muscat",
     placeType: "Sinkhole",
-    image: "lib/assets/oman2.jpeg",
+    image: "lib/assets/oman2.webp",
   ),
   Postmodel(
     id: "post9",
@@ -107,7 +107,7 @@ List<Postmodel> Places = [
     rating: 4,
     governorate: "Dhofar",
     placeType: "Beach",
-    image: "lib/assets/oman2.jpeg",
+    image: "lib/assets/oman2.webp",
   ),
   Postmodel(
     id: "post10",

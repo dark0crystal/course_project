@@ -16,14 +16,14 @@ class Footer extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text(
-            'ALMLAH IS READY',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFFFD966),
-            ),
+          const BouncingText(
+          text: 'ALMLAH IS READY',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFFFD966),
           ),
+        ),
           const SizedBox(height: 24),
           const Text(
             'Quick Links',
@@ -163,3 +163,53 @@ class Footer extends StatelessWidget {
     );
   }
 } 
+
+class BouncingText extends StatefulWidget {
+  final String text;
+  final TextStyle? style;
+
+  const BouncingText({Key? key, required this.text, this.style}) : super(key: key);
+
+  @override
+  _BouncingTextState createState() => _BouncingTextState();
+}
+
+class _BouncingTextState extends State<BouncingText> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, -0.1),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: _offsetAnimation,
+      child: Text(
+        widget.text,
+        style: widget.style,
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}

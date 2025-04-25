@@ -11,7 +11,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Muscat",
     placeType: "Park",
-    image: "lib/assets/oman1.jpeg",
+    image: "lib/assets/alqurm.jpeg",
   ),
   Postmodel(
     id: "post2",
@@ -35,7 +35,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Ad Dakhiliyah",
     placeType: "Mountain",
-    image: "lib/assets/oman3.jpeg",
+    image: "lib/assets/aljabal.jpeg",
   ),
   Postmodel(
     id: "post4",
@@ -47,7 +47,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Ash Sharqiyah South",
     placeType: "Wadi",
-    image: "lib/assets/oman1.jpeg",
+    image: "lib/assets/wadishab.jpeg",
   ),
   Postmodel(
     id: "post5",
@@ -59,7 +59,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Muscat",
     placeType: "Mosque",
-    image: "lib/assets/oman1.jpeg",
+    image: "lib/assets/grandmosque.jpeg",
   ),
   Postmodel(
     id: "post6",
@@ -83,7 +83,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Ash Sharqiyah South",
     placeType: "Nature Reserve",
-    image: "lib/assets/oman1.jpeg",
+    image: "lib/assets/rasaljinz.jpeg",
   ),
   Postmodel(
     id: "post8",
@@ -95,7 +95,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Muscat",
     placeType: "Sinkhole",
-    image: "lib/assets/oman2.webp",
+    image: "lib/assets/bimmah.jpeg",
   ),
   Postmodel(
     id: "post9",
@@ -107,7 +107,7 @@ List<Postmodel> Places = [
     rating: 4,
     governorate: "Dhofar",
     placeType: "Beach",
-    image: "lib/assets/oman2.webp",
+    image: "lib/assets/salalah.jpeg",
   ),
   Postmodel(
     id: "post10",

@@ -1,5 +1,7 @@
+import 'package:course_project/shared/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'Signup.dart';
+
 
 class Login extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -16,7 +18,11 @@ class Login extends StatelessWidget {
         content: Text("You have logged in successfully!"),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop();
+              AuthState.isLoggedIn.value = true;
+              Navigator.of(context).pop(); // Go back after login
+            },
             child: Text("OK"),
           )
         ],
@@ -42,19 +48,13 @@ class Login extends StatelessWidget {
 
   void _handleLogin(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      // Hide any banners first
       ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-
-      // Show SnackBar while logging in
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Logging in...")),
       );
 
-      // Simulate success after a delay (e.g., mock backend)
       Future.delayed(Duration(seconds: 1), () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-        // Show success AlertDialog
         _showSuccessDialog(context);
       });
     } else {
@@ -109,17 +109,12 @@ class Login extends StatelessWidget {
               SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () => _handleLogin(context),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.fromHeight(50),
-                ),
+                style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
                 child: Text("Login"),
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => Signup()),
-                  );
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => Signup()));
                 },
                 child: Text("Don't have an account? Sign Up"),
               )

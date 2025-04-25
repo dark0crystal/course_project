@@ -11,7 +11,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Muscat",
     placeType: "Park",
-    image: "assets/oman1.jpeg",
+    image: "lib/assets/oman1.jpeg",
   ),
   Postmodel(
     id: "post2",
@@ -23,7 +23,7 @@ List<Postmodel> Places = [
     rating: 4,
     governorate: "Muscat",
     placeType: "Market",
-    image: "assets/oman2.jpeg",
+    image: "lib/assets/oman2.webp",
   ),
   Postmodel(
     id: "post3",
@@ -35,7 +35,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Ad Dakhiliyah",
     placeType: "Mountain",
-    image: "assets/oman3.jpeg",
+    image: "lib/assets/oman3.jpeg",
   ),
   Postmodel(
     id: "post4",
@@ -47,7 +47,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Ash Sharqiyah South",
     placeType: "Wadi",
-    image: "assets/oman4.jpeg",
+    image: "lib/assets/oman1.jpeg",
   ),
   Postmodel(
     id: "post5",
@@ -59,7 +59,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Muscat",
     placeType: "Mosque",
-    image: "assets/oman5.jpeg",
+    image: "lib/assets/oman1.jpeg",
   ),
   Postmodel(
     id: "post6",
@@ -71,7 +71,7 @@ List<Postmodel> Places = [
     rating: 4,
     governorate: "Ad Dakhiliyah",
     placeType: "Fort",
-    image: "assets/oman6.jpeg",
+    image: "lib/assets/oman1.jpeg",
   ),
   Postmodel(
     id: "post7",
@@ -83,7 +83,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Ash Sharqiyah South",
     placeType: "Nature Reserve",
-    image: "assets/oman7.jpeg",
+    image: "lib/assets/oman1.jpeg",
   ),
   Postmodel(
     id: "post8",
@@ -95,7 +95,7 @@ List<Postmodel> Places = [
     rating: 5,
     governorate: "Muscat",
     placeType: "Sinkhole",
-    image: "assets/oman8.jpeg",
+    image: "lib/assets/oman2.jpeg",
   ),
   Postmodel(
     id: "post9",
@@ -107,7 +107,7 @@ List<Postmodel> Places = [
     rating: 4,
     governorate: "Dhofar",
     placeType: "Beach",
-    image: "assets/oman9.jpeg",
+    image: "lib/assets/oman2.jpeg",
   ),
   Postmodel(
     id: "post10",
@@ -119,6 +119,6 @@ List<Postmodel> Places = [
     rating: 4,
     governorate: "Ad Dakhiliyah",
     placeType: "Cave",
-    image: "assets/oman10.jpeg",
+    image: "lib/assets/oman1.jpeg",
   ),
 ];

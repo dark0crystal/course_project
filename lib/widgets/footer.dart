@@ -34,29 +34,8 @@ class Footer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Add Tourism Place',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/about');
-            },
-            child: const Text(
-              'about',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'To Map',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+         
+        
           TextButton(
             onPressed: () {
               // Create a sample post for editing
@@ -81,7 +60,7 @@ class Footer extends StatelessWidget {
             },
             child: const Text(
               'Edit Page',
-              style: TextStyle(color: Color(0xFFFFD966)),
+              style: TextStyle(color: Color(0xFFFFD966), fontSize: 24),
             ),
           ),
           const SizedBox(height: 32),

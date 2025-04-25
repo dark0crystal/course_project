@@ -15,11 +15,10 @@ class PlaceDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              'assets/images/placeholder.jpg',
-              width: double.infinity,
-              height: 200,
-              fit: BoxFit.cover,
+            Center(
+              child: Image(
+                image:AssetImage(place.image ?? '')
+                 ),
             ),
             SizedBox(height: 16),
             Text(

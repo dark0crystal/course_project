@@ -31,7 +31,7 @@ class _MapPageState extends State<MapPage> {
   String? selectedGovernorate;
   String? selectedPlaceType;
   bool showOnlyWithImages = false;
-  bool showFilter = true; // Boolean state to toggle filter visibility
+  bool showFilter = true; 
 
   final List<String> governorates = [
     'Muscat', 'Dhofar', 'Musandam', 'Al Buraimi', 'Ad Dakhiliyah',
@@ -67,13 +67,13 @@ class _MapPageState extends State<MapPage> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
-                  showFilter = !showFilter; // Toggle filter visibility
+                  showFilter = !showFilter; 
                 });
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.teal,
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero), // remove rounding for a better clip
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero), 
               ),
               child: Text(
                 showFilter ? 'Hide Filter' : 'Show Filter',
@@ -85,7 +85,7 @@ class _MapPageState extends State<MapPage> {
 
 
 
-          // Filter Section (Visible only when showFilter is true)
+          // Filter Section 
           Visibility(
             visible: showFilter,
             child: Padding(

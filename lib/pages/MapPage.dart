@@ -1,7 +1,27 @@
+import 'package:course_project/models/reviewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:course_project/models/postModel.dart';
 import 'package:course_project/pages/place_details.dart';
 
+
+List<Review> reviews = [
+  Review(
+    id: 'r1',
+    userId: 'u1',
+    placeId: 'p1',
+    rating: 4.5,
+    title: 'Amazing Experience!',
+    description: 'Loved the place, had a great time with family.',
+  ),
+  Review(
+    id: 'r2',
+    userId: 'u2',
+    placeId: 'p2',
+    rating: 3.8,
+    title: 'Good but crowded',
+    description: 'Nice spot but it was very busy during the weekend.',
+  ),
+];
 class DiagonalClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

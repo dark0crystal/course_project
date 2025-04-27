@@ -1,3 +1,4 @@
+import 'package:course_project/models/userModal.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -5,6 +6,26 @@ class Signup extends StatefulWidget {
   @override
   _SignupState createState() => _SignupState();
 }
+
+List<User> users = [
+  User(
+    id: 'u1',
+    userName: 'john_doe',
+    password: 'password123',
+    email: 'john@example.com',
+    role: Role.user,
+    profileImage: 'https://example.com/images/john.jpg',
+  ),
+  User(
+    id: 'u2',
+    userName: 'admin_user',
+    password: 'adminpass',
+    email: 'admin@example.com',
+    role: Role.admin,
+    profileImage: 'https://example.com/images/admin.jpg',
+  ),
+];
+
 
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();

@@ -1,5 +1,45 @@
 # course_project
 
+Project Part 2:
+The Mobile application screens:
+
+Index Page: 
+It gives the user an introduction about the application, it has multiple images about tourism places in oman, and a body that contain a text and a scrollable texts.
+
+Add New Torisum place:
+
+The page contains a form that has multiple types of input fields like one line input field , a multiple-line input field, a dropdown menu to select governorates for example, and input field to upload images.
+
+Map Page: 
+-In this page we render a list of places. Each place has image and information like the name and description.
+-The Map Page also contains a filter dropdown, checkboxes, and radio buttons to filter the places.
+
+Detailed Place Page:
+
+The user is navigated to this page after clicking on one of the places’ posts, in this page we show detailed information about the place and it location also.
+
+Login Page:
+
+We have form to get the user credentials like email and password and validate the inputs. We use an alert to let the user know that he/she is logged in successfully. Also we user 
+
+Sign up:
+
+We have a form that has four input fields like email, password, name, and birth date.
+We are using one line input filed and date picker to select the birth date.
+
+About page:
+A page that contains a centered text , describing the idea of the application.
+
+Edit post page:
+This page contains a form that fetches the data about the required post to edit the post information and then submit it.
+
+At least 3 advanced Flutter widgets not covered in class used
+
+1.AnimatedBuilder 
+2.ClipPath
+3.Image
+
+
 A new Flutter project.
 
 ## Getting Started

@@ -6,6 +6,8 @@ import 'widgets/navbar.dart';
 import 'widgets/hero_section.dart';
 import 'widgets/action_section.dart';
 import 'widgets/footer.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 // In Flutter, MaterialApp() is a widget that serves as the root of a Flutter application and provides essential configurations for a Material Design-based app.
 // It's on the top near the widget tree , 
@@ -13,7 +15,11 @@ import 'widgets/footer.dart';
 
 // we are adding const in front of the MaterialApp() to improve performance , 
 // because if we tell fultter that sth is a constant , it knows then the value will not change
-void main() {
+void main() async {
+
+await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MyApp());
 }
 

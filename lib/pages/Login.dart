@@ -1,28 +1,36 @@
 import 'package:course_project/shared/auth_state.dart';
+import 'package:course_project/services/firestore_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'Signup.dart';
 
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
 
-class Login extends StatelessWidget {
+class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
-
   final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
-  void _showSuccessDialog(BuildContext context) {
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text("Success"),
-        content: Text("You have logged in successfully!"),
+        title: Text("Error"),
+        content: Text(message),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              AuthState.isLoggedIn.value = true;
-              Navigator.of(context).pop(); // Go back after login
-            },
+            onPressed: () => Navigator.of(context).pop(),
             child: Text("OK"),
           )
         ],
@@ -30,40 +38,41 @@ class Login extends StatelessWidget {
     );
   }
 
-  void _showValidationBanner(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showMaterialBanner(
-      MaterialBanner(
-        content: Text(message),
-        backgroundColor: Colors.amber.shade100,
-        leading: Icon(Icons.warning, color: Colors.amber),
-        actions: [
-          TextButton(
-            onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-            child: Text("DISMISS"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _handleLogin(BuildContext context) {
+  Future<void> _handleLogin(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Logging in...")),
-      );
-
-      Future.delayed(Duration(seconds: 1), () {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        _showSuccessDialog(context);
-      });
+      final authState = Provider.of<AuthState>(context, listen: false);
+      
+      try {
+        await authState.login(email.text.trim(), password.text);
+        if (mounted) {
+          Navigator.of(context).pop(); // Go back after successful login
+        }
+      } catch (e) {
+        if (mounted) {
+          _showErrorDialog(context, e.toString());
+        }
+      }
     } else {
-      _showValidationBanner(context, "Please fix the errors above to continue.");
+      ScaffoldMessenger.of(context).showMaterialBanner(
+        MaterialBanner(
+          content: Text("Please fix the errors above to continue."),
+          backgroundColor: Colors.amber.shade100,
+          leading: Icon(Icons.warning, color: Colors.amber),
+          actions: [
+            TextButton(
+              onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+              child: Text("DISMISS"),
+            ),
+          ],
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = Provider.of<AuthState>(context);
+    
     return Scaffold(
       appBar: AppBar(title: Text("Login")),
       body: Padding(
@@ -108,9 +117,15 @@ class Login extends StatelessWidget {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => _handleLogin(context),
+                onPressed: authState.isLoading ? null : () => _handleLogin(context),
                 style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
-                child: Text("Login"),
+                child: authState.isLoading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text("Login"),
               ),
               TextButton(
                 onPressed: () {

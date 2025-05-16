@@ -67,4 +67,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'courseproject-7c06c.firebasestorage.app',
     iosBundleId: 'com.example.courseProject',
   );
+
 }

@@ -1,6 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:course_project/shared/auth_state.dart';
+import 'package:course_project/services/post_service.dart';
+import 'package:course_project/models/postModel.dart';
+import 'package:course_project/pages/Login.dart';
 
 class AddNewPostPage extends StatefulWidget {
   const AddNewPostPage({super.key});
@@ -14,6 +19,8 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
   final TextEditingController _placeDescriptionController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
+  final PostService _postService = PostService();
+  bool _isLoading = false;
 
   String? selectedGovernorate;
   final List<String> Governorates = [
@@ -48,6 +55,21 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
   File? _selectedImage;
 
   @override
+  void initState() {
+    super.initState();
+    // Check if user is logged in
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authState = Provider.of<AuthState>(context, listen: false);
+      if (!authState.isLoggedIn) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => Login()),
+        );
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _placeNameController.dispose();
     _placeDescriptionController.dispose();
@@ -65,7 +87,16 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
     }
   }
 
-  void handleSubmit() {
+  Future<void> handleSubmit() async {
+    final authState = Provider.of<AuthState>(context, listen: false);
+    if (!authState.isLoggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => Login()),
+      );
+      return;
+    }
+
     final name = _placeNameController.text.trim();
     final description = _placeDescriptionController.text.trim();
     final latitude = _latitudeController.text.trim();
@@ -95,28 +126,66 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
         return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Post submitted successfully!")),
+      setState(() {
+        _isLoading = true;
+      });
+
+      final post = Postmodel(
+        id: '',
+        placeName: name,
+        description: description,
+        location: '$lat, $lon',
+        governorate: selectedGovernorate!,
+        placeType: selectedPlaceType!,
+        rating: 5,
+        approval: false,
+        userId: authState.currentUser!.id,
       );
 
-      _placeNameController.clear();
-      _placeDescriptionController.clear();
-      _latitudeController.clear();
-      _longitudeController.clear();
-      setState(() {
-        selectedGovernorate = null;
-        selectedPlaceType = null;
-        _selectedImage = null;
-      });
+      await _postService.createPost(post, authState.currentUser!.id);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Post submitted successfully!")),
+        );
+
+        _placeNameController.clear();
+        _placeDescriptionController.clear();
+        _latitudeController.clear();
+        _longitudeController.clear();
+        setState(() {
+          selectedGovernorate = null;
+          selectedPlaceType = null;
+          _selectedImage = null;
+        });
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter valid numbers for latitude and longitude.")),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error: ${e.toString()}")),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = Provider.of<AuthState>(context);
+    
+    if (!authState.isLoggedIn) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add New Post"),
@@ -240,9 +309,15 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: handleSubmit,
-              icon: const Icon(Icons.send),
-              label: const Text("Submit"),
+              onPressed: _isLoading ? null : handleSubmit,
+              icon: _isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.send),
+              label: Text(_isLoading ? "Submitting..." : "Submit"),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
               ),

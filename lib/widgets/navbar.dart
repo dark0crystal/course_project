@@ -1,6 +1,7 @@
 import 'package:course_project/pages/AddNewPostPage.dart';
 import 'package:course_project/shared/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../pages/About.dart';
 import '../pages/Signup.dart';
@@ -222,10 +223,9 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                                   ),
                                 ),
                                 const SizedBox(height: 32),
-                                ValueListenableBuilder(
-                                  valueListenable: AuthState.isLoggedIn,
-                                  builder: (context, isLoggedIn, child) {
-                                    return !isLoggedIn
+                                Consumer<AuthState>(
+                                  builder: (context, authState, child) {
+                                    return !authState.isLoggedIn
                                         ? Column(
                                             children: [
                                               ElevatedButton(
@@ -248,59 +248,44 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                                                   'Sign Up',
                                                   style: TextStyle(
                                                     fontSize: 24,
-                                                    fontWeight: FontWeight.bold,
                                                     color: Colors.white,
                                                   ),
                                                 ),
                                               ),
-                                              const SizedBox(height: 20),
-                                            ],
-                                          )
-                                        : const SizedBox.shrink();
-                                  },
-                                ),
-                                const SizedBox(height: 20),
-                                ValueListenableBuilder(
-                                  valueListenable: AuthState.isLoggedIn,
-                                  builder: (context, isLoggedIn, child) {
-                                    return isLoggedIn
-                                        ? ElevatedButton(
-                                            onPressed: () {
-                                              AuthState.isLoggedIn.value = false;
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(
-                                                    content:
-                                                        Text("You have signed out.")),
-                                              );
-                                              _toggleMenu();
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.black,
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 40, vertical: 16),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(30),
+                                              const SizedBox(height: 16),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => Login()),
+                                                  );
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.white,
+                                                  padding: const EdgeInsets.symmetric(
+                                                      horizontal: 40, vertical: 16),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(30),
+                                                  ),
+                                                ),
+                                                child: const Text(
+                                                  'Login',
+                                                  style: TextStyle(
+                                                    fontSize: 24,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                            child: const Text(
-                                              'Sign Out',
-                                              style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
-                                            ),
+                                            ],
                                           )
                                         : ElevatedButton(
                                             onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => Login()),
-                                              );
+                                              authState.logout();
                                               _toggleMenu();
                                             },
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.black,
+                                              backgroundColor: Colors.red,
                                               padding: const EdgeInsets.symmetric(
                                                   horizontal: 40, vertical: 16),
                                               shape: RoundedRectangleBorder(
@@ -308,11 +293,11 @@ class _NavbarState extends State<Navbar> with SingleTickerProviderStateMixin {
                                               ),
                                             ),
                                             child: const Text(
-                                              'Log In',
+                                              'Logout',
                                               style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
+                                                fontSize: 24,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           );
                                   },

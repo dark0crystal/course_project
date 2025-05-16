@@ -9,15 +9,27 @@
 // Approval		boolean
 
 class Postmodel {
-  String? id;
-  String? userId;
-  bool? approval;		
+  final String id;
   String? placeName;
-  String? location;
   String? description;
-  int? rating;
+  String? location;
   String? governorate;
   String? placeType;
+  int? rating;
+  bool? approval;
+  final String userId;
   String? image;
-  Postmodel({required this.id , required this.userId, required this.approval ,required this.description ,required this.governorate,required this.location,required this.placeName,required this.placeType,required this.rating ,  this.image});
+
+  Postmodel({
+    required this.id,
+    this.placeName,
+    this.description,
+    this.location,
+    this.governorate,
+    this.placeType,
+    this.rating,
+    this.approval,
+    required this.userId,
+    this.image,
+  });
 }

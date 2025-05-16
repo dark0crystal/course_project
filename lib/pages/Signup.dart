@@ -1,31 +1,14 @@
 import 'package:course_project/models/userModal.dart';
+import 'package:course_project/services/firestore_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:course_project/shared/auth_state.dart';
 
 class Signup extends StatefulWidget {
   @override
   _SignupState createState() => _SignupState();
 }
-
-List<User> users = [
-  User(
-    id: 'u1',
-    userName: 'john_doe',
-    password: 'password123',
-    email: 'john@example.com',
-    role: Role.user,
-    profileImage: 'https://example.com/images/john.jpg',
-  ),
-  User(
-    id: 'u2',
-    userName: 'admin_user',
-    password: 'adminpass',
-    email: 'admin@example.com',
-    role: Role.admin,
-    profileImage: 'https://example.com/images/admin.jpg',
-  ),
-];
-
 
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
@@ -33,7 +16,6 @@ class _SignupState extends State<Signup> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final TextEditingController birthDate = TextEditingController();
-
   final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
   @override
@@ -57,8 +39,51 @@ class _SignupState extends State<Signup> {
     }
   }
 
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text("Error"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text("OK"),
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleSignup(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      final authState = Provider.of<AuthState>(context, listen: false);
+      
+      try {
+        await authState.signup(
+          name.text.trim(),
+          email.text.trim(),
+          password.text,
+        );
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Account created successfully!")),
+          );
+          Navigator.pop(context); // Go back to login
+        }
+      } catch (e) {
+        if (mounted) {
+          _showErrorDialog(context, e.toString());
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authState = Provider.of<AuthState>(context);
+    
     return Scaffold(
       appBar: AppBar(title: Text("Sign Up")),
       body: Padding(
@@ -127,18 +152,17 @@ class _SignupState extends State<Signup> {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Signing up...")),
-                    );
-                    // Sign up logic here
-                  }
-                },
+                onPressed: authState.isLoading ? null : () => _handleSignup(context),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
                 ),
-                child: Text("Sign Up"),
+                child: authState.isLoading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text("Sign Up"),
               ),
             ],
           ),

@@ -87,10 +87,9 @@ class PostService {
     return _firestore
         .collection(_postsCollection)
         .where('userId', isEqualTo: userId)
-        .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
+      final posts = snapshot.docs.map((doc) {
         final data = doc.data();
         return Postmodel(
           id: doc.id,
@@ -105,6 +104,27 @@ class PostService {
           image: data['image'],
         );
       }).toList();
+      
+      // Sort posts by createdAt in memory
+      posts.sort((a, b) {
+        final aData = snapshot.docs.firstWhere((doc) => doc.id == a.id).data();
+        final bData = snapshot.docs.firstWhere((doc) => doc.id == b.id).data();
+        final aTime = aData['createdAt'] as Timestamp?;
+        final bTime = bData['createdAt'] as Timestamp?;
+        if (aTime == null || bTime == null) return 0;
+        return bTime.compareTo(aTime); // descending order
+      });
+      
+      return posts;
     });
+  }
+
+  // Delete a post
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection(_postsCollection).doc(postId).delete();
+    } catch (e) {
+      throw Exception('Failed to delete post: $e');
+    }
   }
 } 

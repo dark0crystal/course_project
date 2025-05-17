@@ -16,9 +16,39 @@ class PlaceDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Image(
-                image:AssetImage(place.image ?? '')
-                 ),
+              child: place.image != null && place.image!.isNotEmpty
+                  ? Image.network(
+                      place.image!,
+                      height: 250,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(child: CircularProgressIndicator());
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 250,
+                          width: double.infinity,
+                          color: Colors.grey[300],
+                          child: Icon(
+                            Icons.error_outline,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        );
+                      },
+                    )
+                  : Container(
+                      height: 250,
+                      width: double.infinity,
+                      color: Colors.grey[300],
+                      child: Icon(
+                        Icons.image_not_supported,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    ),
             ),
             SizedBox(height: 16),
             Text(

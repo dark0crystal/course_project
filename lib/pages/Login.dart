@@ -3,6 +3,7 @@ import 'package:course_project/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Signup.dart';
+import 'UserPostsPage.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _LoginState extends State<Login> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -22,15 +24,18 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  void _showErrorDialog(BuildContext context, String message) {
+  void _showErrorDialog(String message) {
+    if (!mounted) return;
+    
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) => AlertDialog(
         title: Text("Error"),
         content: Text(message),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(dialogContext).pop(),
             child: Text("OK"),
           )
         ],
@@ -38,41 +43,63 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Future<void> _handleLogin(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      final authState = Provider.of<AuthState>(context, listen: false);
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) {
+      if (!mounted) return;
       
-      try {
-        await authState.login(email.text.trim(), password.text);
-        if (mounted) {
-          Navigator.of(context).pop(); // Go back after successful login
-        }
-      } catch (e) {
-        if (mounted) {
-          _showErrorDialog(context, e.toString());
-        }
-      }
-    } else {
-      ScaffoldMessenger.of(context).showMaterialBanner(
-        MaterialBanner(
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           content: Text("Please fix the errors above to continue."),
-          backgroundColor: Colors.amber.shade100,
-          leading: Icon(Icons.warning, color: Colors.amber),
-          actions: [
-            TextButton(
-              onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-              child: Text("DISMISS"),
-            ),
-          ],
+          backgroundColor: Colors.amber.shade800,
+          behavior: SnackBarBehavior.floating,
         ),
       );
+      return;
     }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final authState = Provider.of<AuthState>(context, listen: false);
+      await authState.login(email.text.trim(), password.text);
+      
+      if (!mounted) return;
+      
+      // Navigate to UserPostsPage after successful login
+      Future.microtask(() {
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const UserPostsPage()),
+          );
+        }
+      });
+    } catch (e) {
+      if (!mounted) return;
+      _showErrorDialog(e.toString());
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  void _navigateToSignup() {
+    if (!mounted) return;
+    
+    // Use Future.microtask to ensure navigation happens after the current build
+    Future.microtask(() {
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => Signup()),
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = Provider.of<AuthState>(context);
-    
     return Scaffold(
       appBar: AppBar(title: Text("Login")),
       body: Padding(
@@ -117,9 +144,9 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: authState.isLoading ? null : () => _handleLogin(context),
+                onPressed: _isLoading ? null : _handleLogin,
                 style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
-                child: authState.isLoading
+                child: _isLoading
                     ? SizedBox(
                         width: 20,
                         height: 20,
@@ -128,9 +155,7 @@ class _LoginState extends State<Login> {
                     : Text("Login"),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => Signup()));
-                },
+                onPressed: _isLoading ? null : _navigateToSignup,
                 child: Text("Don't have an account? Sign Up"),
               )
             ],

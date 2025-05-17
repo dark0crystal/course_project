@@ -1,27 +1,8 @@
-import 'package:course_project/models/reviewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:course_project/models/postModel.dart';
 import 'package:course_project/pages/place_details.dart';
+import 'package:course_project/services/post_service.dart';
 
-
-List<Review> reviews = [
-  Review(
-    id: 'r1',
-    userId: 'u1',
-    placeId: 'p1',
-    rating: 4.5,
-    title: 'Amazing Experience!',
-    description: 'Loved the place, had a great time with family.',
-  ),
-  Review(
-    id: 'r2',
-    userId: 'u2',
-    placeId: 'p2',
-    rating: 3.8,
-    title: 'Good but crowded',
-    description: 'Nice spot but it was very busy during the weekend.',
-  ),
-];
 class DiagonalClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -38,16 +19,14 @@ class DiagonalClipper extends CustomClipper<Path> {
 }
 
 class MapPage extends StatefulWidget {
-  final List<Postmodel> places;
-
-  const MapPage({Key? key, required this.places}) : super(key: key);
-  
+  const MapPage({Key? key}) : super(key: key);
 
   @override
   State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
+  final PostService _postService = PostService();
   String? selectedGovernorate;
   String? selectedPlaceType;
   bool showOnlyWithImages = false;
@@ -64,8 +43,8 @@ class _MapPageState extends State<MapPage> {
     'Castle', 'Fort', 'Museum', 'Cave', 'Park', 'Souq'
   ];
 
-  List<Postmodel> get filteredPlaces {
-    return widget.places.where((place) {
+  List<Postmodel> filterPlaces(List<Postmodel> places) {
+    return places.where((place) {
       final matchesGovernorate = selectedGovernorate == null || place.governorate == selectedGovernorate;
       final matchesPlaceType = selectedPlaceType == null || place.placeType == selectedPlaceType;
       final matchesImage = !showOnlyWithImages || (place.image != null && place.image!.isNotEmpty);
@@ -80,30 +59,28 @@ class _MapPageState extends State<MapPage> {
       body: Column(
         children: [
           // Button to toggle filter visibility
-         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ClipPath(
-            clipper: DiagonalClipper(),
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  showFilter = !showFilter; 
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero), 
-              ),
-              child: Text(
-                showFilter ? 'Hide Filter' : 'Show Filter',
-                style: const TextStyle(color: Colors.white),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipPath(
+              clipper: DiagonalClipper(),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    showFilter = !showFilter; 
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero), 
+                ),
+                child: Text(
+                  showFilter ? 'Hide Filter' : 'Show Filter',
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ),
-        ),
-
-
 
           // Filter Section 
           Visibility(
@@ -172,63 +149,97 @@ class _MapPageState extends State<MapPage> {
 
           // List of Places
           Expanded(
-            child: filteredPlaces.isEmpty
-                ? const Center(child: Text('No places match the filter.'))
-                : ListView.builder(
-                    itemCount: filteredPlaces.length,
-                    itemBuilder: (context, index) {
-                      final place = filteredPlaces[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PlaceDetailScreen(place: place),
-                            ),
-                          );
-                        },
-                        child: Card(
-                          margin: const EdgeInsets.all(10),
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+            child: StreamBuilder<List<Postmodel>>(
+              stream: _postService.getPosts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
+
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                final places = filterPlaces(snapshot.data!);
+
+                if (places.isEmpty) {
+                  return const Center(
+                    child: Text('No places match the filter.'),
+                  );
+                }
+
+                return ListView.builder(
+                  itemCount: places.length,
+                  itemBuilder: (context, index) {
+                    final place = places[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlaceDetailScreen(place: place),
                           ),
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Image.asset(
-                                  place.image ?? '',
-                                  height: 180,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      place.placeName ?? 'Unnamed Place',
-                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(place.governorate ?? '', style: const TextStyle(color: Colors.grey)),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      place.description ?? '',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                        );
+                      },
+                      child: Card(
+                        margin: const EdgeInsets.all(10),
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      );
-                    },
-                  ),
+                        child: Column(
+                          children: [
+                            if (place.image != null && place.image!.isNotEmpty)
+                              Image.network(
+                                place.image!,
+                                height: 180,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    height: 180,
+                                    width: double.infinity,
+                                    color: Colors.grey[300],
+                                    child: const Icon(
+                                      Icons.error_outline,
+                                      size: 50,
+                                      color: Colors.grey,
+                                    ),
+                                  );
+                                },
+                              ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    place.placeName ?? 'Unnamed Place',
+                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(place.governorate ?? '', style: const TextStyle(color: Colors.grey)),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    place.description ?? '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),

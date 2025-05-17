@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:course_project/shared/auth_state.dart';
 import 'package:course_project/services/post_service.dart';
@@ -19,6 +18,7 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
   final TextEditingController _placeDescriptionController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
+  final TextEditingController _imageUrlController = TextEditingController();
   final PostService _postService = PostService();
   bool _isLoading = false;
 
@@ -52,12 +52,9 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
     'Souq'
   ];
 
-  File? _selectedImage;
-
   @override
   void initState() {
     super.initState();
-    // Check if user is logged in
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authState = Provider.of<AuthState>(context, listen: false);
       if (!authState.isLoggedIn) {
@@ -75,19 +72,11 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
     _placeDescriptionController.dispose();
     _latitudeController.dispose();
     _longitudeController.dispose();
+    _imageUrlController.dispose();
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _selectedImage = File(pickedImage.path);
-      });
-    }
-  }
-
-  Future<void> handleSubmit() async {
+  Future<void> _submitPost() async {
     final authState = Provider.of<AuthState>(context, listen: false);
     if (!authState.isLoggedIn) {
       Navigator.pushReplacement(
@@ -101,16 +90,18 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
     final description = _placeDescriptionController.text.trim();
     final latitude = _latitudeController.text.trim();
     final longitude = _longitudeController.text.trim();
+    final imageUrl = _imageUrlController.text.trim();
 
-    if (name.isEmpty ||
-        description.isEmpty ||
-        latitude.isEmpty ||
-        longitude.isEmpty ||
-        selectedGovernorate == null ||
-        selectedPlaceType == null ||
-        _selectedImage == null) {
+    if (name.isEmpty || description.isEmpty || latitude.isEmpty || longitude.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please fill in all fields and select an image.")),
+        const SnackBar(content: Text("Please fill in all fields")),
+      );
+      return;
+    }
+
+    if (selectedGovernorate == null || selectedPlaceType == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please select governorate and place type")),
       );
       return;
     }
@@ -140,6 +131,7 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
         rating: 5,
         approval: false,
         userId: authState.currentUser!.id,
+        image: imageUrl.isEmpty ? null : imageUrl,
       );
 
       await _postService.createPost(post, authState.currentUser!.id);
@@ -153,10 +145,10 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
         _placeDescriptionController.clear();
         _latitudeController.clear();
         _longitudeController.clear();
+        _imageUrlController.clear();
         setState(() {
           selectedGovernorate = null;
           selectedPlaceType = null;
-          _selectedImage = null;
         });
       }
     } catch (e) {
@@ -219,107 +211,89 @@ class _AddNewPostPageState extends State<AddNewPostPage> {
                 Expanded(
                   child: TextField(
                     controller: _latitudeController,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: const InputDecoration(
                       labelText: "Latitude",
                       prefixIcon: Icon(Icons.location_on),
                       border: OutlineInputBorder(),
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: TextField(
                     controller: _longitudeController,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: const InputDecoration(
                       labelText: "Longitude",
                       prefixIcon: Icon(Icons.location_on),
                       border: OutlineInputBorder(),
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 24),
             DropdownButtonFormField<String>(
+              value: selectedGovernorate,
               decoration: const InputDecoration(
-                labelText: "Choose a Governorate:",
+                labelText: "Governorate",
+                prefixIcon: Icon(Icons.map),
                 border: OutlineInputBorder(),
               ),
-              value: selectedGovernorate,
               items: Governorates.map((String governorate) {
-                return DropdownMenuItem(
+                return DropdownMenuItem<String>(
                   value: governorate,
                   child: Text(governorate),
                 );
               }).toList(),
-              onChanged: (newValue) {
+              onChanged: (String? newValue) {
                 setState(() {
                   selectedGovernorate = newValue;
                 });
               },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             DropdownButtonFormField<String>(
+              value: selectedPlaceType,
               decoration: const InputDecoration(
-                labelText: "Choose a Place Type:",
+                labelText: "Place Type",
+                prefixIcon: Icon(Icons.category),
                 border: OutlineInputBorder(),
               ),
-              value: selectedPlaceType,
-              items: PlaceTypes.map((String placeType) {
-                return DropdownMenuItem(
-                  value: placeType,
-                  child: Text(placeType),
+              items: PlaceTypes.map((String type) {
+                return DropdownMenuItem<String>(
+                  value: type,
+                  child: Text(type),
                 );
               }).toList(),
-              onChanged: (newValue) {
+              onChanged: (String? newValue) {
                 setState(() {
                   selectedPlaceType = newValue;
                 });
               },
             ),
             const SizedBox(height: 24),
-            GestureDetector(
-              onTap: _pickImage,
-              child: _selectedImage != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(
-                        _selectedImage!,
-                        height: 150,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : Container(
-                      height: 150,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Tap to upload an image',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                        ),
-                      ),
-                    ),
+            TextField(
+              controller: _imageUrlController,
+              decoration: const InputDecoration(
+                labelText: "Image URL",
+                prefixIcon: Icon(Icons.image),
+                border: OutlineInputBorder(),
+                hintText: "Paste the image URL here",
+              ),
             ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: _isLoading ? null : handleSubmit,
-              icon: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.send),
-              label: Text(_isLoading ? "Submitting..." : "Submit"),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
+            const SizedBox(height: 32),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _isLoading ? null : _submitPost,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: _isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text("Submit Post"),
               ),
             ),
           ],

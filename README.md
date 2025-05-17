@@ -1,4 +1,66 @@
 # course_project
+Project Part 3:
+1-App Navigation and Structure:
+Login and Logout Screens
+●
+●
+A dedicated Login screen allows users to authenticate using their credentials.
+Upon successful login, users are redirected to the main interface of the app.
+●
+A Logout function is provided to securely end the user session and return to the Login
+screen.
+Bottom Navigation Bar
+●
+●
+●
+A Bottom Navigation Bar is included to enable quick switching between major sections
+of the app such as Home, Explore, Profile, etc.
+Icons and labels help users easily understand each tab's function.
+Navigation is persistent across all screens and ensures intuitive app flow.
+Bottom App Bar
+●
+actions .
+A Bottom App Bar is implemented to enhance usability and maintain access to key
+●
+The bar adapts contextually to the screen and content, improving interactivity.
+2- Enhanced UI with Stacked Layouts:
+We utilized Flutter’s Stack, Positioned, and Container widgets to create layered UI
+elements, enabling multiple components to visually overlap in a meaningful way.
+3- Improving Design with Interactive Lists and Layouts:
+We utilized both ListView and GridView widgets across different screens to present structured
+content effectively.
+4- Firebase Database:
+We have integrated flutter with Firebase and created multiple tables in the database:
+Posts:
+Approval:boolen,
+createdAt:timeStamp,
+Description:String,
+Governate:String,
+Image:String,
+Location:String,
+PlaceName:String,
+PlaceType:String,
+Rating:Integer,
+UserId:String
+Users:
+id:String
+email:String,
+Password:String,
+userName
+Oman_Info:
+Title:String
+Description:String
+Image
+_
+Url:String
+5- Data Operations and Full Database Interaction:
+In the database we have implemented all the CRUD operations:
+1-Create: Allow the authenticated user to create new post.
+2-Delete: Allow the authenticated user to delete his/her posts
+3-Read:Read the posts from the database to show them for the users in the map page.
+4-Update: allow the authenticated user to update his posts
+7- Final Deployment to Mobile Devices:
+We have Deployed our project in Android mobile phone in .apk .
 
 Project Part 2:
 The Mobile application screens:

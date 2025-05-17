@@ -12,6 +12,88 @@ class AboutPage extends StatelessWidget {
         foregroundColor: Colors.black,
         elevation: 0,
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Color(0xFFFFD966),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.location_on,
+                      size: 35,
+                      color: Color(0xFFFFD966),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'ALMLAH',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'Discover Oman\'s Hidden Gems',
+                    style: TextStyle(
+                      color: Colors.grey[800],
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.explore),
+              title: const Text('Explore Places'),
+              onTap: () {
+                Navigator.pop(context);
+                // Add navigation to explore places
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.add_location),
+              title: const Text('Add New Place'),
+              onTap: () {
+                Navigator.pop(context);
+                // Add navigation to add new place
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('About'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.pop(context);
+                // Add navigation to settings
+              },
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(

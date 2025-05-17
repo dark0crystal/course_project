@@ -12,11 +12,11 @@ class ImageGallery extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MapPage(places: Places,)),
+          MaterialPageRoute(builder: (context) => const MapPage()),
         );
       },
       child: Container(
-        height: 300, // Increased height for better visual impact
+        height: 300, 
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Stack(
           children: [
